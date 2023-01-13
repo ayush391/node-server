@@ -1,11 +1,10 @@
 const express = require('express')
-const { bakris, home } = require('../controllers/bakriController')
+const createUser = require('../controllers/authController')
 
-const router = express.Router()
+const router = express()
 
-router.get('/', home)
+router.post('/signup', createUser)
 
-router.get('/bakris/:count?', bakris)
 
 
 
