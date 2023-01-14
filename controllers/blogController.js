@@ -1,14 +1,30 @@
 const BlogModel = require('../models/blog')
 
 const createBlog = async (req, res) => {
-    const newBlog = await BlogModel.create({
-        'userId': req.id,
-        'blogTitle': req.body.blogTitle,
-        'blogDesc': req.body.blogDesc,
-    })
+    try {
 
-    await newBlog.save()
-    res.status(200).json(newBlog)
+        const newBlog = await BlogModel.create({
+            'userId': req.id,
+            'blogTitle': req.body.blogTitle,
+            'blogDesc': req.body.blogDesc,
+        })
+
+        await newBlog.save()
+        res.status(200).json(newBlog)
+    }
+    catch (err) {
+        return res.status(500).send({ error: err.message })
+    }
 }
 
-module.exports = { createBlog }
+const fetchAllBlogs = async (req, res) => {
+    try {
+        const blogs = await BlogModel.find({ userId: req.params.userid })
+        res.status(200).json(blogs)
+    }
+    catch (err) {
+        return res.status(500).send({ error: err.message })
+    }
+}
+
+module.exports = { createBlog, fetchAllBlogs }

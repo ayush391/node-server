@@ -9,7 +9,6 @@ const fetchUser = (req, res, next) => {
     }
     const data = jwt.verify(token, process.env.JWT_SIGN)
     req.id = data.id
-    console.log(req.id)
     next()
 }
 
