@@ -1,9 +1,11 @@
 const express = require('express')
-const createUser = require('../controllers/authController')
+const userRoutes = require('../routes/user/userRoutes')
+const blogRoutes = require('../routes/blog/blogRoutes')
 
 const router = express()
 
-router.post('/signup', createUser)
+router.use('/user', userRoutes)
+router.use('/blog', blogRoutes)
 
 
 
