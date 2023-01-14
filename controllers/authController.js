@@ -1,5 +1,8 @@
+require('dotenv').config()
 const UserModel = require('../models/user')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
 
 const createUser = async (req, res) => {
     const id = req.body.id
@@ -29,7 +32,11 @@ const loginUser = async (req, res) => {
         // const salt = await bcrypt.genSalt(10)
         let check = await bcrypt.compare(password, user.password)
         if (check) {
-            return res.status(200).send('User logged in successfully')
+
+            let token = jwt.sign({ id }, process.env.JWT_SIGN)
+
+            console.log('User logged in successfully')
+            return res.status(200).json(token)
         }
     }
 
