@@ -17,7 +17,7 @@ const createUser = async (req, res) => {
             const salt = await bcrypt.genSalt(10)
             password = await bcrypt.hash(password, salt)
             user = await UserModel.create({ id, password })
-            const response = await user.save()
+            await user.save()
             return res.status(200).send('User created successfully')
         }
 
