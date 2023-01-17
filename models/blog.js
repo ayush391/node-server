@@ -6,6 +6,14 @@ const BlogSchema = new Schema({
     'userId': String,
     'blogTitle': String,
     'blogDesc': String,
+    'blogImg': {
+        type: String,
+    },
+    'createdAt': {
+        type: Date,
+        required: true,
+        default: Date.now,
+    },
 })
 
 const BlogModel = mongoose.model('blog', BlogSchema)
