@@ -5,6 +5,7 @@ const createBlog = async (req, res) => {
         const newBlog = await BlogModel.create({
             'userId': req.id,
             'blogTitle': req.body.blogTitle,
+            'blogImg': req.body.blogImg,
             'blogDesc': req.body.blogDesc,
         })
 
