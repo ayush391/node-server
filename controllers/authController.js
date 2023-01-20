@@ -37,14 +37,37 @@ const loginUser = async (req, res) => {
         let user = await UserModel.findOne({ id })
 
         if (user) {
-            // const salt = await bcrypt.genSalt(10)
             let check = await bcrypt.compare(password, user.password)
+
             if (check) {
 
                 let token = jwt.sign({ id }, process.env.JWT_SIGN)
 
-                return res.status(200).json(token)
+                const { _id, password, ...userInfo } = user['_doc']
+
+                return res.status(200).json({ token: token, user: userInfo })
             }
+        }
+
+        return res.status(400).send('User or password is incorrect')
+    }
+    catch (err) {
+        return res.status(500).send({ error: err.message })
+    }
+}
+const getUser = async (req, res) => {
+    const token = req.headers['auth-token']
+    try {
+
+        let userId = jwt.verify(token, process.env.JWT_SIGN)
+
+        let user = await UserModel.findOne({ id: userId.id })
+
+        if (user) {
+
+            const { _id, password, ...userInfo } = user['_doc']
+
+            return res.status(200).json({ token: token, user: userInfo })
         }
 
         return res.status(400).send('User or password is incorrect')
@@ -55,4 +78,4 @@ const loginUser = async (req, res) => {
 
 }
 
-module.exports = { createUser, loginUser }
+module.exports = { createUser, loginUser, getUser }

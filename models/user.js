@@ -7,6 +7,19 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    'dp': {
+        type: String,
+        // required: true,
+    },
+    'name': {
+        type: String,
+        // required: true,
+    },
+    'dob': {
+        type: Date,
+        default: Date.now
+        // required: true,
+    },
     'password': {
         type: String,
         required: true,

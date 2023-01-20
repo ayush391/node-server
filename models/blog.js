@@ -5,6 +5,7 @@ const Schema = mongoose.Schema
 const BlogSchema = new Schema({
     'userId': String,
     'blogTitle': String,
+    'blogSummary': String,
     'blogDesc': String,
     'blogImg': {
         type: String,

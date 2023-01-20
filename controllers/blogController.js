@@ -16,11 +16,23 @@ const createBlog = async (req, res) => {
         return res.status(500).send({ error: err.message })
     }
 }
+const editBlog = async (req, res) => {
+    try {
+        const newBlog = await BlogModel.updateOne(
+            { '_id': req.params.blogid },
+            { ...req.body }
+        )
+        res.status(200).json(newBlog)
+    }
+    catch (err) {
+        return res.status(500).send({ error: err.message })
+    }
+}
 
 const fetchBlog = async (req, res) => {
     try {
-        const blogs = await BlogModel.find({ '_id': req.params.blogid })
-        res.status(200).json(blogs)
+        const blog = await BlogModel.find({ '_id': req.params.blogid })
+        res.status(200).json(blog)
     }
     catch (err) {
         return res.status(500).send({ error: err.message })
@@ -38,7 +50,7 @@ const userBlogs = async (req, res) => {
 
 const fetchAllBlogs = async (req, res) => {
     try {
-        const blogs = await BlogModel.find()
+        const blogs = await BlogModel.find({}, { blogDesc: 0 })
         res.status(200).json(blogs)
     }
     catch (err) {
@@ -46,4 +58,4 @@ const fetchAllBlogs = async (req, res) => {
     }
 }
 
-module.exports = { createBlog, userBlogs, fetchAllBlogs, fetchBlog }
+module.exports = { createBlog, userBlogs, fetchAllBlogs, fetchBlog, editBlog }
