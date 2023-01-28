@@ -41,7 +41,7 @@ const loginUser = async (req, res) => {
 
             if (check) {
 
-                let token = jwt.sign({ id }, process.env.JWT_SIGN)
+                let token = jwt.sign({ id }, process.env.JWT_SIGN, { expiresIn: '3h' })
 
                 const { _id, password, ...userInfo } = user['_doc']
 

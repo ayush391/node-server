@@ -10,6 +10,10 @@ const BlogSchema = new Schema({
     'blogImg': {
         type: String,
     },
+    'category': {
+        type: String,
+        default: 'General'
+    },
     'createdAt': {
         type: Date,
         required: true,

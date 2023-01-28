@@ -1,3 +1,5 @@
+const { ObjectId } = require('mongodb')
+const { default: mongoose } = require('mongoose')
 const BlogModel = require('../models/blog')
 
 const createBlog = async (req, res) => {
@@ -18,8 +20,8 @@ const createBlog = async (req, res) => {
 }
 const editBlog = async (req, res) => {
     try {
-        const newBlog = await BlogModel.updateOne(
-            { '_id': req.params.blogid },
+        const newBlog = await BlogModel.findByIdAndUpdate(
+            new mongoose.Types.ObjectId(req.params.blogid),
             { ...req.body }
         )
         res.status(200).json(newBlog)
@@ -28,10 +30,19 @@ const editBlog = async (req, res) => {
         return res.status(500).send({ error: err.message })
     }
 }
+const removeBlog = async (req, res) => {
+    try {
+        const response = await BlogModel.findByIdAndDelete(new mongoose.Types.ObjectId(req.params.blogid))
+        res.status(200).json(response)
+    }
+    catch (err) {
+        return res.status(500).send({ error: err.message })
+    }
+}
 
 const fetchBlog = async (req, res) => {
     try {
-        const blog = await BlogModel.find({ '_id': req.params.blogid })
+        const blog = await BlogModel.findById(new mongoose.Types.ObjectId(req.params.blogid))
         res.status(200).json(blog)
     }
     catch (err) {
@@ -58,4 +69,4 @@ const fetchAllBlogs = async (req, res) => {
     }
 }
 
-module.exports = { createBlog, userBlogs, fetchAllBlogs, fetchBlog, editBlog }
+module.exports = { createBlog, userBlogs, fetchAllBlogs, fetchBlog, editBlog, removeBlog }
