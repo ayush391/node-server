@@ -10,7 +10,7 @@ server.put('/edit/:blogid', fetchUser, blogController.editBlog)
 server.get('/fetchall', blogController.fetchAllBlogs)
 server.get('/userid/:userid', blogController.userBlogs)
 server.get('/blogid/:blogid', blogController.fetchBlog)
-server.delete('/remove/:blogid', blogController.removeBlog)
+server.delete('/remove/:blogid', fetchUser, blogController.removeBlog)
 
 
 module.exports = server
