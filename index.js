@@ -16,7 +16,7 @@ server.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 server.use(router);
 
 
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, process.env.BASE_URL, () => {
     console.log(`Server started at ${process.env.BASE_URL}:${process.env.PORT}`)
 })
 
