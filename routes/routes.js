@@ -8,6 +8,9 @@ const router = express()
 router.use('/user', userRoutes)
 router.use('/blog', blogRoutes)
 router.use('/category', categoryRoutes)
+router.get('/health', (req, res) => {
+    res.status(204).send()
+})
 
 
 module.exports = router
