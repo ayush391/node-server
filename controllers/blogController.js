@@ -20,10 +20,13 @@ const createBlog = async (req, res) => {
 }
 const editBlog = async (req, res) => {
     try {
-        const newBlog = await BlogModel.findByIdAndUpdate(
-            new mongoose.Types.ObjectId(req.params.blogid),
+        const newBlog = await BlogModel.findOneAndUpdate(
+            { '_id': req.params.blogid, userId: req.id },
             { ...req.body }
         )
+        if (newBlog === null) {
+            return res.status(300).send('unauthorized request')
+        }
         res.status(200).json(newBlog)
     }
     catch (err) {
@@ -33,6 +36,9 @@ const editBlog = async (req, res) => {
 const removeBlog = async (req, res) => {
     try {
         const response = await BlogModel.findOneAndDelete({ '_id': req.params.blogid, userId: req.id })
+        if (response === null) {
+            return res.status(300).send('unauthorized request')
+        }
         res.status(200).json(response)
     }
     catch (err) {
