@@ -97,6 +97,10 @@ const getUser = async (req, res) => {
         return res.status(400).send('User or password is incorrect')
     }
     catch (err) {
+        if (err instanceof jwt.TokenExpiredError) {
+            return res.status(401).send('token expired. please login again')
+
+        }
         return res.status(500).send({ error: err.message })
     }
 
