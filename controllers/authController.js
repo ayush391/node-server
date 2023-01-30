@@ -41,9 +41,8 @@ const editUser = async (req, res) => {
             data = { ...data, password: newPassword }
         }
         const result = await UserModel.findOneAndUpdate({ id: userid }, { ...data })
-
         if (result !== null) {
-            return res.status(200).json(result)
+            return res.status(200).json({ ...result['_doc'], password: '' })
         }
 
         return res.status(400).send('User does not exists')
@@ -107,7 +106,8 @@ const getUserInfo = async (req, res) => {
     try {
         const user = await UserModel.find({ id: req.params.userid })
         if (user.length) {
-            res.status(200).json(user[0])
+            const { password, ...userData } = user[0]['_doc']
+            res.status(200).json(userData)
             return
         }
         res.status(404).send('user does not exist')
