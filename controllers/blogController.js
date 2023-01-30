@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb')
 const { default: mongoose } = require('mongoose')
 const BlogModel = require('../models/blog')
+const UserModel = require('../models/user')
 
 const createBlog = async (req, res) => {
     try {
@@ -57,9 +58,15 @@ const fetchBlog = async (req, res) => {
 }
 const userBlogs = async (req, res) => {
     try {
+        const data = await UserModel.find({ id: req.params.userid })
+        if (data.length) {
+            const blogs = await BlogModel.find({ userId: req.params.userid })
+            res.status(200).json(blogs)
+            return
+        }
 
-        const blogs = await BlogModel.find({ userId: req.params.userid })
-        res.status(200).json(blogs)
+        res.status(404).send('user does not exist')
+
     }
     catch (err) {
         return res.status(500).send({ error: err.message })

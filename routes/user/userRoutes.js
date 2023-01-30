@@ -8,7 +8,7 @@ const server = express()
 server.post('/signup', authController.createUser)
 server.post('/login', authController.loginUser)
 server.get('/getuser', authController.getUser)
-server.put('/edituser/', fetchUser, authController.getUserInfo)
+server.put('/edituser/', fetchUser, authController.editUser)
 server.get('/getuserinfo/:userid', authController.getUserInfo)
 
 module.exports = server

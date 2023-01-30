@@ -34,18 +34,15 @@ const editUser = async (req, res) => {
 
     try {
 
+        let { id, password, ...data } = req.body
+        if (password?.length) {
+            const salt = await bcrypt.genSalt(10)
+            const newPassword = await bcrypt.hash(password, salt)
+            data = { ...data, password: newPassword }
+        }
+        const result = await UserModel.findOneAndUpdate({ id: userid }, { ...data })
 
-        let user = await UserModel.find({ id: userid })
-
-        if (user.length) {
-            const { id, password, data } = req.body
-            console.log(data)
-            if (password.length) {
-                const salt = await bcrypt.genSalt(10)
-                const newPassword = await bcrypt.hash(password, salt)
-                data = { ...data, password: newPassword }
-            }
-            const result = await UserModel.updateOne({ ...data })
+        if (result !== null) {
             return res.status(200).json(result)
         }
 
@@ -120,4 +117,4 @@ const getUserInfo = async (req, res) => {
     }
 }
 
-module.exports = { createUser, loginUser, getUser, getUserInfo }
+module.exports = { createUser, editUser, loginUser, getUser, getUserInfo }
