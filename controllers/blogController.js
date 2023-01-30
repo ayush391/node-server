@@ -32,7 +32,7 @@ const editBlog = async (req, res) => {
 }
 const removeBlog = async (req, res) => {
     try {
-        const response = await BlogModel.findByIdAndDelete(new mongoose.Types.ObjectId(req.params.blogid))
+        const response = await BlogModel.findOneAndDelete({ '_id': req.params.blogid, userId: req.id })
         res.status(200).json(response)
     }
     catch (err) {
@@ -51,6 +51,7 @@ const fetchBlog = async (req, res) => {
 }
 const userBlogs = async (req, res) => {
     try {
+
         const blogs = await BlogModel.find({ userId: req.params.userid })
         res.status(200).json(blogs)
     }

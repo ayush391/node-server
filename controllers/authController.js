@@ -29,6 +29,34 @@ const createUser = async (req, res) => {
     }
 }
 
+const editUser = async (req, res) => {
+    const userid = req.id
+
+    try {
+
+
+        let user = await UserModel.find({ id: userid })
+
+        if (user.length) {
+            const { id, password, data } = req.body
+            console.log(data)
+            if (password.length) {
+                const salt = await bcrypt.genSalt(10)
+                const newPassword = await bcrypt.hash(password, salt)
+                data = { ...data, password: newPassword }
+            }
+            const result = await UserModel.updateOne({ ...data })
+            return res.status(200).json(result)
+        }
+
+        return res.status(400).send('User does not exists')
+
+    }
+    catch (err) {
+        return res.status(500).send({ error: err.message })
+    }
+}
+
 const loginUser = async (req, res) => {
     const id = req.body.id
     const password = req.body.password
@@ -78,4 +106,18 @@ const getUser = async (req, res) => {
 
 }
 
-module.exports = { createUser, loginUser, getUser }
+const getUserInfo = async (req, res) => {
+    try {
+        const user = await UserModel.find({ id: req.params.userid })
+        if (user.length) {
+            res.status(200).json(user[0])
+            return
+        }
+        res.status(404).send('user does not exist')
+    }
+    catch (err) {
+        res.status(500).send(err.message)
+    }
+}
+
+module.exports = { createUser, loginUser, getUser, getUserInfo }
